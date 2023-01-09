@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# proj temp file
+tests
+__pycache__
+.ok_history
+.ok_storage
