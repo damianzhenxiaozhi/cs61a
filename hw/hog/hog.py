@@ -26,11 +26,11 @@ def roll_dice(num_rolls, dice=six_sided):
     roll_number_one, sum, i = False, 0, 0
     while i < num_rolls:
         num = dice()
-        i = i + 1
         if (num == 1):
             roll_number_one = True
         else:
             sum = sum + num
+        i = i + 1
     if roll_number_one:
         return 1
     else:
@@ -77,22 +77,14 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
         return roll_dice(num_rolls, dice)
     # END PROBLEM 3
 
-def square(score):
-    i = 1
-    while i <= (score + 1) // 2:
-        if i * i == score:
-            return i
-        i = i + 1
-    return 0
-
 def perfect_square(score):
-    n = square(score)
+    n = square_root(score)
     if n > 0:
         return True
     return False
 
 def next_perfect_square(score):
-    n = square(score)
+    n = square_root(score)
     return (n + 1) * (n + 1)
 
 def simple_update(num_rolls, player_score, opponent_score, dice=six_sided):
@@ -115,6 +107,13 @@ def square_update(num_rolls, player_score, opponent_score, dice=six_sided):
 
 # BEGIN PROBLEM 4
 "*** YOUR CODE HERE ***"
+def square_root(score):
+    i, threshold = 1, (score + 1) // 2
+    while i <= threshold:
+        if i * i == score:
+            return i
+        i = i + 1
+    return 0
 # END PROBLEM 4
 
 
@@ -154,6 +153,12 @@ def play(strategy0, strategy1, update,
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    while score0 < goal and score1 < goal:
+        if who == 0:
+            score0 = update(strategy0(score0, score1), score0, score1, dice)
+        else:
+            score1 = update(strategy1(score1, score0), score1, score0, dice)
+        who = 1 - who
     # END PROBLEM 5
     return score0, score1
 
@@ -179,6 +184,9 @@ def always_roll(n):
     assert n >= 0 and n <= 10
     # BEGIN PROBLEM 6
     "*** YOUR CODE HERE ***"
+    def fix_roll(score, opponent_score):
+        return n
+    return fix_roll
     # END PROBLEM 6
 
 
@@ -209,6 +217,16 @@ def is_always_roll(strategy, goal=GOAL):
     """
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
+    score, opponent_score = 0, 0
+    num = strategy(score, opponent_score)
+    while score < 100:
+        while opponent_score < 100:
+            if num != strategy(score, opponent_score):
+                return False
+            opponent_score += 1
+        score += 1
+        opponent_score = 0
+    return True
     # END PROBLEM 7
 
 
@@ -225,6 +243,12 @@ def make_averaged(original_function, total_samples=1000):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    def average(*args):
+        sum, i = 0, 0
+        while i < total_samples:
+            sum, i = sum + original_function(*args), i + 1
+        return sum / total_samples
+    return average
     # END PROBLEM 8
 
 
