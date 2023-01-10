@@ -129,7 +129,6 @@ dmypy.json
 .pyre/
 
 # proj temp file
-tests
 __pycache__
 .ok_history
 .ok_storage
