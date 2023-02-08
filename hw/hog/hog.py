@@ -333,13 +333,28 @@ def square_strategy(score, opponent_score, threshold=12, num_rolls=6):
         return num_rolls
     # END PROBLEM 11
 
+def average_score_roll_6():
+    average = make_averaged(roll_dice)
+    return average(6)
 
-def final_strategy(score, opponent_score):
+avg_score_roll_6 = average_score_roll_6()
+
+def final_strategy(score, opponent_score, goal=GOAL):
     """Write a brief description of your final strategy.
 
     *** YOUR DESCRIPTION HERE ***
     """
     # BEGIN PROBLEM 12
+    if score > opponent_score and goal - score <= 3.5:
+        return 1
+    elif score > opponent_score and goal - score <= 7:
+        return 2
+    elif score > opponent_score and goal - score <= 10.5:
+        return 3
+   
+    if tail_points(opponent_score) > avg_score_roll_6:
+        return 0
+
     return 6  # Remove this line once implemented.
     # END PROBLEM 12
 
